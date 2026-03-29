@@ -10,6 +10,7 @@ import { useProjects } from '@/hooks/useProjects'
 import { copyToClipboard } from '@/lib/utils'
 import { toast } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
+import { gaEvent } from '@/lib/analytics'
 import type { Project } from '@/types'
 
 // ── Syntax-highlighted alias display ──────────────────────────
@@ -243,6 +244,7 @@ export function GeneratorPage() {
         alias_count: generated.length,
         email_domain: 'gmail.com',
       })
+      gaEvent('aliases_generated', { alias_count: generated.length })
     } else { setIsValid(false); setAliases([]) }
   }, [email])
 
@@ -266,6 +268,7 @@ export function GeneratorPage() {
       setTimeout(() => setCopyAllDone(false), 2000)
       toast.success(`Copied ${aliases.length} aliases`)
       blink.analytics.log('copy_all_aliases', { alias_count: aliases.length })
+      gaEvent('copy_all_aliases', { alias_count: aliases.length })
     }
   }
 
@@ -274,6 +277,7 @@ export function GeneratorPage() {
     addAliasToProject(projectId, { alias: saveTarget, mainEmail: normalizeGmail(email) })
     toast.success('Alias saved to project!')
     blink.analytics.log('alias_saved_to_project', { action: 'existing_project' })
+    gaEvent('alias_saved_to_project', { action: 'existing_project' })
     setSaveTarget(null)
   }
 
@@ -283,6 +287,7 @@ export function GeneratorPage() {
     addAliasToProject(project.id, { alias: saveTarget, mainEmail: normalizeGmail(email) })
     toast.success(`Alias saved to "${name}"`)
     blink.analytics.log('alias_saved_to_project', { action: 'new_project' })
+    gaEvent('alias_saved_to_project', { action: 'new_project' })
     setSaveTarget(null)
   }
 
