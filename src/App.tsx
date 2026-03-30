@@ -14,15 +14,11 @@ import { ProjectDetailPage } from '@/pages/ProjectDetailPage'
 import { SettingsPage } from '@/pages/SettingsPage'
 import { ToastContainer } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
-import { gaPageView } from '@/lib/analytics'
 
 function AnalyticsTracker() {
   const location = useLocation()
   useEffect(() => {
-    // Blink Analytics
     blink.analytics.log('page_view', { path: location.pathname })
-    // Google Analytics GA4
-    gaPageView(location.pathname)
   }, [location.pathname])
   return null
 }

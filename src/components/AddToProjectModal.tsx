@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { X, FolderPlus, Folder, Plus, Globe } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { X, FolderPlus, Folder, Plus, Globe, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Project } from '@/types'
 
@@ -27,6 +27,14 @@ export function AddToProjectModal({
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [notes, setNotes] = useState('')
+
+  // Check if alias already exists in the currently selected project
+  const isDuplicate = useMemo(() => {
+    if (isCreating) return false
+    const project = projects.find(p => p.id === selectedProjectId)
+    if (!project) return false
+    return project.aliases.some(a => a.alias.toLowerCase() === alias.toLowerCase())
+  }, [selectedProjectId, isCreating, projects, alias])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -166,6 +174,14 @@ export function AddToProjectModal({
               />
             </div>
 
+            {/* Duplicate warning */}
+            {isDuplicate && (
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-600 dark:text-amber-400">
+                <AlertCircle size={13} className="shrink-0" />
+                <p className="text-xs font-medium">This alias is already saved in the selected project.</p>
+              </div>
+            )}
+
             {/* Actions */}
             <div className="flex gap-2.5 pt-1">
               <button
@@ -177,7 +193,13 @@ export function AddToProjectModal({
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 btn-premium flex items-center justify-center gap-1.5"
+                disabled={isDuplicate}
+                className={cn(
+                  'flex-1 px-4 py-2.5 rounded-xl text-sm font-medium btn-premium flex items-center justify-center gap-1.5 transition-all',
+                  isDuplicate
+                    ? 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                )}
               >
                 <FolderPlus size={13} />
                 Save Alias

@@ -3,15 +3,15 @@ import { useSearch, useNavigate } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
-  ChevronDown, Search, Info, Star,
+  ChevronDown, Search, Info, Star, Layers,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
 import { copyToClipboard } from '@/lib/utils'
 import { toast } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
-import { gaEvent } from '@/lib/analytics'
 import type { Project } from '@/types'
+import { BulkSaveModal } from '@/components/BulkSaveModal'
 
 // ── Syntax-highlighted alias display ──────────────────────────
 function AliasDisplay({ alias, isOriginal = false }: { alias: string; isOriginal?: boolean }) {
@@ -229,6 +229,7 @@ export function GeneratorPage() {
   const [isValid, setIsValid] = useState<boolean | null>(null)
   const [filter, setFilter] = useState('')
   const [saveTarget, setSaveTarget] = useState<string | null>(null)
+  const [showBulkSave, setShowBulkSave] = useState(false)
   const [copyAllDone, setCopyAllDone] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const filterRef = useRef<HTMLInputElement>(null)
@@ -244,7 +245,6 @@ export function GeneratorPage() {
         alias_count: generated.length,
         email_domain: 'gmail.com',
       })
-      gaEvent('aliases_generated', { alias_count: generated.length })
     } else { setIsValid(false); setAliases([]) }
   }, [email])
 
@@ -268,16 +268,18 @@ export function GeneratorPage() {
       setTimeout(() => setCopyAllDone(false), 2000)
       toast.success(`Copied ${aliases.length} aliases`)
       blink.analytics.log('copy_all_aliases', { alias_count: aliases.length })
-      gaEvent('copy_all_aliases', { alias_count: aliases.length })
     }
   }
 
   function handleModalSave(projectId: string) {
     if (!saveTarget) return
-    addAliasToProject(projectId, { alias: saveTarget, mainEmail: normalizeGmail(email) })
-    toast.success('Alias saved to project!')
-    blink.analytics.log('alias_saved_to_project', { action: 'existing_project' })
-    gaEvent('alias_saved_to_project', { action: 'existing_project' })
+    const saved = addAliasToProject(projectId, { alias: saveTarget, mainEmail: normalizeGmail(email) })
+    if (saved) {
+      toast.success('Alias saved to project!')
+      blink.analytics.log('alias_saved_to_project', { action: 'existing_project' })
+    } else {
+      toast.error('This alias is already saved in that project.')
+    }
     setSaveTarget(null)
   }
 
@@ -287,8 +289,34 @@ export function GeneratorPage() {
     addAliasToProject(project.id, { alias: saveTarget, mainEmail: normalizeGmail(email) })
     toast.success(`Alias saved to "${name}"`)
     blink.analytics.log('alias_saved_to_project', { action: 'new_project' })
-    gaEvent('alias_saved_to_project', { action: 'new_project' })
     setSaveTarget(null)
+  }
+
+  function handleBulkSave(projectId: string, selectedAliases: string[]) {
+    let saved = 0, skipped = 0
+    selectedAliases.forEach(alias => {
+      const result = addAliasToProject(projectId, { alias, mainEmail: normalizeGmail(email) })
+      result ? saved++ : skipped++
+    })
+    const project = projects.find(p => p.id === projectId)
+    const name = project?.name ?? 'project'
+    if (saved > 0 && skipped === 0) toast.success(`${saved} alias${saved !== 1 ? 'es' : ''} saved to "${name}"`)
+    else if (saved > 0) toast.success(`${saved} saved, ${skipped} already existed in "${name}"`)
+    else toast.error(`All selected aliases already exist in "${name}"`)
+    blink.analytics.log('bulk_aliases_saved', { saved, skipped })
+    setShowBulkSave(false)
+  }
+
+  function handleBulkCreateAndSave(name: string, domain: string, selectedAliases: string[]) {
+    const project = createProject(name, domain)
+    let saved = 0
+    selectedAliases.forEach(alias => {
+      const result = addAliasToProject(project.id, { alias, mainEmail: normalizeGmail(email) })
+      if (result) saved++
+    })
+    toast.success(`${saved} alias${saved !== 1 ? 'es' : ''} saved to "${name}"`)
+    blink.analytics.log('bulk_aliases_saved', { saved, skipped: 0 })
+    setShowBulkSave(false)
   }
 
   const normalizedEmail = email.trim() && isValidGmail(email.trim()) ? normalizeGmail(email.trim()) : null
@@ -420,16 +448,29 @@ export function GeneratorPage() {
                   )}
                 </span>
 
-                <motion.button
-                  onClick={handleCopyAll}
-                  className={`btn-premium btn-outline copy-all-btn${copyAllDone ? ' copy-all-done' : ''}`}
-                  style={{ height: 32, padding: '0 12px', fontSize: '12.5px', gap: 5 }}
-                  animate={copyAllDone ? { scale: [1, 1.06, 1] } : { scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {copyAllDone ? <Check size={12} /> : <Copy size={12} />}
-                  {copyAllDone ? 'Copied!' : 'Copy All'}
-                </motion.button>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <motion.button
+                    onClick={handleCopyAll}
+                    className={`btn-premium btn-outline copy-all-btn${copyAllDone ? ' copy-all-done' : ''}`}
+                    style={{ height: 32, padding: '0 12px', fontSize: '12.5px', gap: 5 }}
+                    animate={copyAllDone ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {copyAllDone ? <Check size={12} /> : <Copy size={12} />}
+                    {copyAllDone ? 'Copied!' : 'Copy All'}
+                  </motion.button>
+                  {projects.length > 0 && (
+                    <button
+                      onClick={() => setShowBulkSave(true)}
+                      className="btn-premium btn-outline"
+                      style={{ height: 32, padding: '0 12px', fontSize: '12.5px', gap: 5, display: 'flex', alignItems: 'center' }}
+                      title="Save all aliases to a project"
+                    >
+                      <Layers size={12} />
+                      Save All
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Search box — always visible when aliases exist */}
@@ -545,7 +586,7 @@ export function GeneratorPage() {
         )}
       </motion.div>
 
-      {/* Add to project modal */}
+      {/* Single alias save modal */}
       <AnimatePresence>
         {saveTarget && (
           <AddToProjectModal
@@ -555,6 +596,20 @@ export function GeneratorPage() {
             onSave={handleModalSave}
             onCreateAndSave={handleCreateAndSave}
             onClose={() => setSaveTarget(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Bulk save modal */}
+      <AnimatePresence>
+        {showBulkSave && (
+          <BulkSaveModal
+            aliases={filteredAliases}
+            mainEmail={normalizeGmail(email)}
+            projects={projects}
+            onSave={handleBulkSave}
+            onCreateAndSave={handleBulkCreateAndSave}
+            onClose={() => setShowBulkSave(false)}
           />
         )}
       </AnimatePresence>

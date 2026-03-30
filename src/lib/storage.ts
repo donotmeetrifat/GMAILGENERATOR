@@ -66,6 +66,11 @@ export function addAliasToProject(
   const all = getProjects()
   const idx = all.findIndex(p => p.id === projectId)
   if (idx === -1) return null
+  // Duplicate guard — same alias already exists in this project
+  const isDuplicate = all[idx].aliases.some(
+    a => a.alias.toLowerCase() === data.alias.toLowerCase()
+  )
+  if (isDuplicate) return null
   const now = new Date().toISOString()
   const saved: SavedAlias = {
     id: generateId(),

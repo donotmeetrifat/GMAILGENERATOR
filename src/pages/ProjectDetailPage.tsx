@@ -59,7 +59,7 @@ function EditableCell({ value, onChange, placeholder = '—' }: { value: string;
     <input value={draft} onChange={e => setDraft(e.target.value)}
       style={{ width: 110, height: 26, padding: '0 8px', border: '1.5px solid hsl(var(--primary) / 0.4)', borderRadius: 6, fontSize: 12, fontFamily: 'var(--font-sans)', background: 'hsl(var(--card))', color: 'hsl(var(--foreground))', outline: 'none' }}
       autoFocus
-      onBlur={() => { onChange(draft); setEditing(false) }}
+      onBlur={() => {onChange(draft); setEditing(false)}}
       onKeyDown={e => { if (e.key === 'Enter') { onChange(draft); setEditing(false) } if (e.key === 'Escape') { setDraft(value); setEditing(false) } }}
     />
   )
@@ -344,7 +344,7 @@ export function ProjectDetailPage() {
           </div>
 
           {/* ── Mobile card list (hidden on desktop) ── */}
-          <div className="alias-cards-wrap" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="alias-cards-wrap" style={{ flexDirection: 'column', gap: 10 }}>
             {filteredAliases.map((alias, i) => (
               <AliasCard
                 key={alias.id}
@@ -374,6 +374,7 @@ export function ProjectDetailPage() {
           </button>
         </div>
       )}
+
     </div>
   )
 }
