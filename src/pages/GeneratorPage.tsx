@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
   ChevronDown, Search, Info, Star, Layers,
-  WifiOff,
+  WifiOff, Download,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
@@ -14,6 +14,7 @@ import { toast } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
 import type { Project } from '@/types'
 import { BulkSaveModal } from '@/components/BulkSaveModal'
+import { InstallAppModal } from '@/components/InstallAppModal'
 
 // ── Syntax-highlighted alias display ──────────────────────────
 function AliasDisplay({ alias, isOriginal = false }: { alias: string; isOriginal?: boolean }) {
@@ -233,6 +234,7 @@ export function GeneratorPage() {
   const [filter, setFilter] = useState('')
   const [saveTarget, setSaveTarget] = useState<string | null>(null)
   const [showBulkSave, setShowBulkSave] = useState(false)
+  const [showInstallModal, setShowInstallModal] = useState(false)
   const [copyAllDone, setCopyAllDone] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const filterRef = useRef<HTMLInputElement>(null)
@@ -397,6 +399,28 @@ export function GeneratorPage() {
         }}>
           Turn one Gmail into 100+ email addresses using the Gmail dot trick — 100% free, no signup.
         </p>
+
+        {/* Download App Action */}
+        <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+          <button
+            onClick={() => setShowInstallModal(true)}
+            className="btn-premium btn-primary"
+            style={{
+              padding: '8px 20px',
+              borderRadius: 999,
+              fontSize: '13px',
+              fontWeight: 650,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              boxShadow: '0 4px 16px hsl(var(--primary) / 0.32)',
+              cursor: 'pointer',
+            }}
+          >
+            <Download size={14} />
+            Download App (Works Offline)
+          </button>
+        </div>
       </motion.div>
 
       {/* ── Offline Active Alert Banner ──────────────── */}
@@ -664,6 +688,12 @@ export function GeneratorPage() {
           />
         )}
       </AnimatePresence>
+
+      {/* PWA Offline App Install Modal */}
+      <InstallAppModal
+        isOpen={showInstallModal}
+        onClose={() => setShowInstallModal(false)}
+      />
     </main>
   )
 }
