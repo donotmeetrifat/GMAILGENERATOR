@@ -343,11 +343,11 @@ export function GeneratorPage() {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
           <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '5px 13px', borderRadius: 999,
+            display: 'inline-flex', alignItems: 'center', gap: 7,
+            padding: '5px 14px', borderRadius: 999,
             background: 'hsl(var(--primary) / 0.07)', border: '1px solid hsl(var(--primary) / 0.15)',
           }}>
-            <Mail size={11} style={{ color: 'hsl(var(--primary))' }} />
+            <img src="/logo.png" alt="Unlimited Gmail Logo" style={{ width: 14, height: 14, objectFit: 'contain' }} />
             <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(var(--primary))' }}>
               Unlimited Gmail Generator
             </span>
@@ -607,8 +607,8 @@ export function GeneratorPage() {
         {/* Empty state */}
         {!email.trim() && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '36px 20px 24px', color: 'hsl(var(--muted-foreground))' }}>
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: 'hsl(var(--primary) / 0.08)', border: '1px solid hsl(var(--primary) / 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
-              <Mail size={20} style={{ color: 'hsl(var(--primary) / 0.5)' }} />
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: 'hsl(var(--primary) / 0.08)', border: '1px solid hsl(var(--primary) / 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
+              <img src="/logo.png" alt="Unlimited Gmail Logo" style={{ width: 34, height: 34, objectFit: 'contain' }} />
             </div>
             <p style={{ margin: '0 auto', fontSize: '13.5px', maxWidth: 300, lineHeight: 1.6 }}>
               Enter a Gmail address above to instantly generate all dot alias variations
