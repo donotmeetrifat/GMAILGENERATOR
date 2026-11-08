@@ -471,7 +471,9 @@ export function SettingsPage() {
   function handleClearAll() {
     clearAllData()
     toast.success('All data cleared')
-    setTimeout(() => window.location.reload(), 900)
+    setTimeout(() => {
+      window.location.href = '/'
+    }, 600)
   }
 
   const projects = getProjects()
