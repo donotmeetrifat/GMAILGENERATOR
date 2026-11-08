@@ -32,10 +32,18 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            reg.update();
             console.log('Unlimited Gmail Offline ServiceWorker registered:', reg.scope);
           }).catch(function(err) {
             console.warn('ServiceWorker registration error:', err);
           });
+        });
+        var refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+          if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+          }
         });
       }
     </script>

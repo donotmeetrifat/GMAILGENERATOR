@@ -374,3 +374,4 @@ export function InstallAppModal({ isOpen, onClose }: InstallAppModalProps) {
     </AnimatePresence>
   )
 }
+
