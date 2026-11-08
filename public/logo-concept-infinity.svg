@@ -1,0 +1,79 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="40" y1="40" x2="472" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Infinity Envelope Gradient -->
+    <linearGradient id="infGrad" x1="120" y1="160" x2="392" y2="352" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+
+    <!-- Accent Glow -->
+    <linearGradient id="accentGlow" x1="160" y1="160" x2="360" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Shadow filter -->
+    <filter id="shadow" x="0" y="8" width="512" height="512" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#1e3a8a" flood-opacity="0.45"/>
+    </filter>
+
+    <filter id="innerGlow" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Container Squircle with shadow -->
+  <rect x="36" y="36" width="440" height="440" rx="108" fill="url(#bgGrad)" filter="url(#shadow)"/>
+
+  <!-- Subtle glossy surface overlay -->
+  <rect x="38" y="38" width="436" height="220" rx="106" fill="white" fill-opacity="0.08"/>
+
+  <!-- Subtle Grid dots in background -->
+  <circle cx="100" cy="110" r="3" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="130" cy="110" r="3" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="100" cy="140" r="3" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="412" cy="380" r="3" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="382" cy="410" r="3" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="412" cy="410" r="3" fill="#ffffff" fill-opacity="0.2"/>
+
+  <!-- Graphic: Modern Infinity Mail Form -->
+  <g filter="url(#innerGlow)">
+    <!-- Base Mail Envelope Shape -->
+    <rect x="116" y="166" width="280" height="196" rx="28" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-width="12" stroke-linejoin="round"/>
+
+    <!-- Dynamic Infinity Flap / Ribbon -->
+    <!-- Left Loop of Infinity -->
+    <path d="M 256 248 C 210 180, 148 180, 148 240 C 148 296, 210 296, 256 248 C 302 200, 364 200, 364 256 C 364 316, 302 316, 256 248 Z" 
+          fill="none" 
+          stroke="url(#infGrad)" 
+          stroke-width="26" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+
+    <!-- Envelope Flap V-Line converging into the center -->
+    <path d="M 126 178 L 220 252" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-opacity="0.9"/>
+    <path d="M 386 178 L 292 252" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-opacity="0.9"/>
+
+    <!-- Floating Dot Trick Orbs (Aliases) -->
+    <!-- Dot 1 -->
+    <circle cx="202" cy="240" r="10" fill="#38bdf8"/>
+    <!-- Dot 2 (Center Intersection Glow) -->
+    <circle cx="256" cy="248" r="14" fill="#ffffff"/>
+    <circle cx="256" cy="248" r="7" fill="#2563eb"/>
+    <!-- Dot 3 -->
+    <circle cx="310" cy="256" r="10" fill="#38bdf8"/>
+
+    <!-- Multiplier Dot Sparkles -->
+    <circle cx="360" cy="148" r="8" fill="#67e8f9"/>
+    <circle cx="388" cy="136" r="5" fill="#bae6fd"/>
+    <circle cx="140" cy="360" r="7" fill="#67e8f9"/>
+  </g>
+</svg>

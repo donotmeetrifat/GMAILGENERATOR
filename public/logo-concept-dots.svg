@@ -1,0 +1,89 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient (Deep Indigo Obsidian) -->
+    <linearGradient id="bgDark" x1="40" y1="40" x2="472" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="60%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+
+    <!-- Neon Rim Gradient -->
+    <linearGradient id="neonRim" x1="40" y1="40" x2="472" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <!-- Mail Gradient -->
+    <linearGradient id="mailGrad" x1="120" y1="160" x2="392" y2="352" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+
+    <!-- Glowing Dot Gradient -->
+    <linearGradient id="dotGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+
+    <!-- Glow Drop Shadow -->
+    <filter id="neonShadow" x="0" y="8" width="512" height="512" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="28" flood-color="#4338ca" flood-opacity="0.55"/>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Container Squircle with glowing border -->
+  <rect x="36" y="36" width="440" height="440" rx="108" fill="url(#bgDark)" filter="url(#neonShadow)"/>
+  <rect x="38" y="38" width="436" height="436" rx="106" stroke="url(#neonRim)" stroke-width="3" fill="none"/>
+
+  <!-- Radial subtle background glow -->
+  <circle cx="256" cy="256" r="140" fill="#4f46e5" fill-opacity="0.15" filter="url(#softGlow)"/>
+
+  <!-- Graphic: Modern Minimalist Gmail Envelope Silhouette -->
+  <g filter="url(#softGlow)">
+    <!-- Envelope Base Card -->
+    <rect x="110" y="160" width="292" height="204" rx="26" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+
+    <!-- Left Google Red/Blue Column Accent -->
+    <path d="M 110 186 C 110 172, 122 160, 136 160 L 176 160 L 176 364 L 136 364 C 122 364, 110 352, 110 338 Z" fill="#3b82f6"/>
+
+    <!-- Right Google Blue/Violet Column Accent -->
+    <path d="M 402 186 C 402 172, 390 160, 376 160 L 336 160 L 336 364 L 376 364 C 390 364, 402 352, 402 338 Z" fill="#6366f1"/>
+
+    <!-- Dynamic Fold Chevron / M-Shape -->
+    <path d="M 176 160 L 256 242 L 336 160" stroke="#f8fafc" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 116 168 L 256 280 L 396 168" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.7"/>
+
+    <!-- ── Dot Trick Constellation: Radiating Dot Aliases ── -->
+    <!-- Central generator dot -->
+    <circle cx="256" cy="242" r="12" fill="#ffffff" filter="url(#softGlow)"/>
+    <circle cx="256" cy="242" r="6" fill="#0284c7"/>
+
+    <!-- Dot stream line 1 (Top Left) -->
+    <circle cx="216" cy="202" r="7" fill="#38bdf8"/>
+    <circle cx="180" cy="166" r="5" fill="#7dd3fc"/>
+    <circle cx="148" cy="134" r="3.5" fill="#bae6fd"/>
+
+    <!-- Dot stream line 2 (Top Right) -->
+    <circle cx="296" cy="202" r="7" fill="#a78bfa"/>
+    <circle cx="332" cy="166" r="5" fill="#c4b5fd"/>
+    <circle cx="364" cy="134" r="3.5" fill="#e9d5ff"/>
+
+    <!-- Dot stream line 3 (Bottom Radiance: Infinite Alias Nodes) -->
+    <circle cx="180" cy="316" r="8" fill="#38bdf8"/>
+    <circle cx="224" cy="316" r="8" fill="#60a5fa"/>
+    <circle cx="256" cy="316" r="10" fill="#ffffff"/>
+    <circle cx="288" cy="316" r="8" fill="#818cf8"/>
+    <circle cx="332" cy="316" r="8" fill="#c084fc"/>
+
+    <!-- Multiplier badge tag (+ symbol & dots) -->
+    <circle cx="256" cy="390" r="16" fill="#3b82f6"/>
+    <path d="M 256 382 L 256 398 M 248 390 L 264 390" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
