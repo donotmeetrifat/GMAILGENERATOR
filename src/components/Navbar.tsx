@@ -58,7 +58,7 @@ export function Navbar() {
             <Mail size={15} style={{ color: '#fff' }} />
           </div>
           <span style={{ fontSize: '15.5px', fontWeight: 700, letterSpacing: '-0.025em', color: 'hsl(var(--foreground))' }}>
-            gmail<span style={{ color: 'hsl(var(--primary))' }}>generator</span>
+            Unlimited <span style={{ color: 'hsl(var(--primary))' }}>Gmail Generator</span>
           </span>
         </Link>
 

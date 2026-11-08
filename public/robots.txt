@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unlimitedgmailgenerator.vercel.app/sitemap.xml
+

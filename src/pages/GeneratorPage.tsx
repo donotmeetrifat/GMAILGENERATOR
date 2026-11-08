@@ -345,7 +345,7 @@ export function GeneratorPage() {
         }}>
           <Mail size={11} style={{ color: 'hsl(var(--primary))' }} />
           <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(var(--primary))' }}>
-            gmailgenerator
+            Unlimited Gmail Generator
           </span>
         </div>
 

@@ -1,5 +1,5 @@
 /**
- * Gmail Dot Alias Generator
+ * Unlimited Gmail Generator - Dot Alias Generator
  *
  * Gmail ignores dots in the local part of addresses.
  * This generates all 2^(n-1) possible dot-variant combinations

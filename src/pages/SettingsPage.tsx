@@ -484,7 +484,7 @@ export function SettingsPage() {
           Settings
         </h1>
         <p style={{ margin: '6px 0 0', fontSize: '14px', color: 'hsl(var(--muted-foreground))' }}>
-          Configure gmailgenerator. All data is stored locally in your browser.
+          Configure Unlimited Gmail Generator. All data is stored locally in your browser.
         </p>
       </motion.div>
 
@@ -524,7 +524,7 @@ export function SettingsPage() {
 
             <div style={{ padding: '0 18px 14px' }}>
               <InfoCallout>
-                gmailgenerator stores all data only in <strong style={{ color: 'hsl(var(--foreground))' }}>localStorage</strong> in your browser. No data is sent to any server, ever. Your aliases, passwords, and project data are yours alone.
+                Unlimited Gmail Generator stores all data only in <strong style={{ color: 'hsl(var(--foreground))' }}>localStorage</strong> in your browser. No data is sent to any server, ever. Your aliases, passwords, and project data are yours alone.
               </InfoCallout>
             </div>
           </Section>
@@ -600,7 +600,7 @@ export function SettingsPage() {
             <div style={{ padding: '13px 18px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                 {[
-                  ['App', 'gmailgenerator'],
+                  ['App', 'Unlimited Gmail Generator'],
                   ['Version', '1.0.0'],
                   ['Storage', 'localStorage (browser-only)'],
                   ['Network', 'None — fully offline'],

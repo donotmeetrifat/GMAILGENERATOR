@@ -1,4 +1,4 @@
-// Unified storage layer for DotAlias Pro
+// Unified storage layer for Unlimited Gmail Generator
 import type { Project, SavedAlias, AppSettings } from '../types'
 import { DEFAULT_SETTINGS } from '../types'
 
