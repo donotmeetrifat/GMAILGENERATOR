@@ -758,6 +758,72 @@ export function GeneratorPage() {
         )}
       </motion.div>
 
+      {/* ── How to Create Multiple Emails with One Gmail Guide ───────────── */}
+      <section style={{ marginTop: 32, marginBottom: 36 }}>
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '4px 12px', borderRadius: 999,
+            background: 'hsl(var(--primary) / 0.08)', color: 'hsl(var(--primary))',
+            fontSize: '11.5px', fontWeight: 650, letterSpacing: '0.04em', textTransform: 'uppercase',
+            marginBottom: 8,
+          }}>
+            <Zap size={12} /> Step-by-Step Guide
+          </div>
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 750,
+            letterSpacing: '-0.03em', color: 'hsl(var(--foreground))', margin: '0 0 6px',
+          }}>
+            How to Create Multiple Emails with One Gmail
+          </h2>
+          <p style={{ fontSize: '13.5px', color: 'hsl(var(--muted-foreground))', margin: 0, maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
+            Google ignores periods in usernames. By inserting dots in different positions, you can create dozens of separate accounts on any website while receiving all incoming messages in your existing Gmail inbox.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+          <div className="glass-card" style={{ padding: '16px 18px', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <span style={{ width: 24, height: 24, borderRadius: 6, background: 'hsl(var(--primary))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>1</span>
+              <strong style={{ fontSize: '14px', color: 'hsl(var(--foreground))' }}>Enter Your Address</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '12.5px', color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+              Type your existing Gmail username above. The generator automatically computes all valid mathematical dot variations.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '16px 18px', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <span style={{ width: 24, height: 24, borderRadius: 6, background: 'hsl(var(--primary))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>2</span>
+              <strong style={{ fontSize: '14px', color: 'hsl(var(--foreground))' }}>Pick or Export Aliases</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '12.5px', color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+              Copy individual variations with one click, or export the complete list as a clean .TXT or .CSV spreadsheet.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '16px 18px', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <span style={{ width: 24, height: 24, borderRadius: 6, background: 'hsl(var(--primary))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>3</span>
+              <strong style={{ fontSize: '14px', color: 'hsl(var(--foreground))' }}>Sign Up Anywhere</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '12.5px', color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+              Use your dot aliases across websites, trials, and newsletters. Services see each as a completely unique account.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '16px 18px', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <span style={{ width: 24, height: 24, borderRadius: 6, background: 'hsl(var(--primary))', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>4</span>
+              <strong style={{ fontSize: '14px', color: 'hsl(var(--foreground))' }}>One Central Inbox</strong>
+            </div>
+            <p style={{ margin: 0, fontSize: '12.5px', color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+              All activation emails and notifications deliver straight to your main inbox without setting up mail forwarding.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── SEO Knowledge Base & FAQs Section ───────────── */}
       <section style={{ marginTop: 36, marginBottom: 36 }}>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
