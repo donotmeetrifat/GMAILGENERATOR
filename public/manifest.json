@@ -1,0 +1,25 @@
+{
+  "name": "Unlimited Gmail Generator",
+  "short_name": "Unlimited Gmail",
+  "description": "Generate unlimited Gmail dot aliases instantly. Works 100% offline without internet.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

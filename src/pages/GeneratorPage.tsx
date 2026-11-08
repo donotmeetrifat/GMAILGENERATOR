@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
   ChevronDown, Search, Info, Star, Layers,
+  Wifi, WifiOff, Zap, ShieldCheck, Download,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
+import { useNetworkStatus } from '@/hooks/useNetworkStatus'
 import { copyToClipboard } from '@/lib/utils'
 import { toast } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
@@ -223,6 +225,7 @@ export function GeneratorPage() {
   const search = useSearch({ strict: false }) as { email?: string }
   const navigate = useNavigate()
   const { projects, addAliasToProject, createProject } = useProjects()
+  const { isOnline, canInstall, installApp } = useNetworkStatus()
 
   const [email, setEmail] = useState(search.email ?? '')
   const [aliases, setAliases] = useState<string[]>([])
@@ -338,15 +341,40 @@ export function GeneratorPage() {
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         style={{ textAlign: 'center', marginBottom: 44 }}
       >
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 6,
-          padding: '5px 13px', borderRadius: 999, marginBottom: 20,
-          background: 'hsl(var(--primary) / 0.07)', border: '1px solid hsl(var(--primary) / 0.15)',
-        }}>
-          <Mail size={11} style={{ color: 'hsl(var(--primary))' }} />
-          <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(var(--primary))' }}>
-            Unlimited Gmail Generator
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '5px 13px', borderRadius: 999,
+            background: 'hsl(var(--primary) / 0.07)', border: '1px solid hsl(var(--primary) / 0.15)',
+          }}>
+            <Mail size={11} style={{ color: 'hsl(var(--primary))' }} />
+            <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(var(--primary))' }}>
+              Unlimited Gmail Generator
+            </span>
+          </div>
+
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '5px 13px', borderRadius: 999,
+            background: isOnline ? 'hsl(142 71% 45% / 0.08)' : 'hsl(35 90% 55% / 0.14)',
+            border: `1px solid ${isOnline ? 'hsl(142 71% 45% / 0.22)' : 'hsl(35 90% 55% / 0.35)'}`,
+          }}>
+            {isOnline ? (
+              <>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
+                <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(142 71% 32%)' }}>
+                  100% Offline Ready
+                </span>
+              </>
+            ) : (
+              <>
+                <WifiOff size={11} style={{ color: 'hsl(35 90% 42%)' }} />
+                <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(35 90% 38%)' }}>
+                  Offline Mode Active
+                </span>
+              </>
+            )}
+          </div>
         </div>
 
         <h1 style={{
@@ -370,6 +398,29 @@ export function GeneratorPage() {
           Turn one Gmail into 100+ email addresses using the Gmail dot trick — 100% free, no signup.
         </p>
       </motion.div>
+
+      {/* ── Offline Active Alert Banner ──────────────── */}
+      <AnimatePresence>
+        {!isOnline && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '11px 16px', borderRadius: 12,
+              background: 'hsl(35 90% 55% / 0.1)', border: '1px solid hsl(35 90% 55% / 0.28)',
+              color: 'hsl(35 90% 36%)', marginBottom: 18, fontSize: '13px', fontWeight: 550,
+              lineHeight: 1.5,
+            }}
+          >
+            <WifiOff size={16} style={{ flexShrink: 0, color: 'hsl(35 90% 42%)' }} />
+            <span>
+              <strong>Offline Mode Active:</strong> You are currently disconnected from the internet. All generator algorithms and project vaults continue to work completely offline.
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Generator card ───────────────────────────── */}
       <motion.div
@@ -584,6 +635,77 @@ export function GeneratorPage() {
             </p>
           </motion.div>
         )}
+      </motion.div>
+
+      {/* ── Offline Feature Showcase Card ───────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25, duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+        className="glass-card"
+        style={{ padding: '20px 22px', marginBottom: 24 }}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', flex: 1, minWidth: 260 }}>
+            <div style={{
+              width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+              background: 'hsl(142 71% 45% / 0.12)', border: '1px solid hsl(142 71% 45% / 0.25)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <WifiOff size={17} style={{ color: 'hsl(142 71% 34%)' }} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 650, letterSpacing: '-0.02em', color: 'hsl(var(--foreground))' }}>
+                  Works 100% Offline
+                </h3>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  padding: '2px 8px', borderRadius: 99, fontSize: '11px', fontWeight: 600,
+                  background: isOnline ? 'hsl(142 71% 45% / 0.1)' : 'hsl(35 90% 55% / 0.12)',
+                  color: isOnline ? 'hsl(142 71% 32%)' : 'hsl(35 90% 38%)',
+                  border: `1px solid ${isOnline ? 'hsl(142 71% 45% / 0.2)' : 'hsl(35 90% 55% / 0.25)'}`,
+                }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: isOnline ? '#22c55e' : '#f59e0b' }} />
+                  {isOnline ? 'Offline Ready (Service Worker Active)' : 'Running Offline Now'}
+                </span>
+              </div>
+              <p style={{ margin: '5px 0 0', fontSize: '13px', color: 'hsl(var(--muted-foreground))', lineHeight: 1.6 }}>
+                Unlimited Gmail Generator is designed to work completely without Wi-Fi, data, or network access. All alias generation calculations and saved project data execute locally inside your browser sandbox.
+              </p>
+            </div>
+          </div>
+
+          {canInstall && (
+            <button
+              onClick={installApp}
+              className="btn-premium btn-primary"
+              style={{ height: 34, fontSize: '12.5px', gap: 6, flexShrink: 0 }}
+            >
+              <Download size={13} />
+              Install App
+            </button>
+          )}
+        </div>
+
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: 12, marginTop: 16, paddingTop: 14, borderTop: '1px solid hsl(var(--border) / 0.6)',
+        }}>
+          {[
+            { icon: Zap, label: 'Instant Generation', desc: 'No remote server latency' },
+            { icon: ShieldCheck, label: 'Local Isolation', desc: 'Zero data leaves your device' },
+            { icon: WifiOff, label: 'Airplane Mode', desc: 'Full functionality anywhere' },
+          ].map((item, idx) => (
+            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <item.icon size={14} style={{ color: 'hsl(var(--primary))', flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '12.5px', fontWeight: 600, color: 'hsl(var(--foreground))' }}>{item.label}</div>
+                <div style={{ fontSize: '11px', color: 'hsl(var(--muted-foreground))' }}>{item.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </motion.div>
 
       {/* Single alias save modal */}

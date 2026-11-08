@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
-import { Mail, FolderOpen, Settings, ShieldCheck, Menu, X } from 'lucide-react'
+import { Mail, FolderOpen, Settings, ShieldCheck, Menu, X, WifiOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getSettings } from '@/lib/storage'
+import { useNetworkStatus } from '@/hooks/useNetworkStatus'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Generator', icon: Mail, exact: true },
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
 
 export function Navbar() {
   const location = useLocation()
+  const { isOnline } = useNetworkStatus()
   const settings = getSettings()
   const localOnly = settings.localOnlyMode
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -20,6 +22,20 @@ export function Navbar() {
     if (exact) return location.pathname === to
     return location.pathname.startsWith(to)
   }
+
+  const offlineBadge = !isOnline && (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 5,
+      padding: '4px 9px', borderRadius: 99,
+      background: 'hsl(35 90% 55% / 0.12)',
+      border: '1px solid hsl(35 90% 55% / 0.28)',
+    }}>
+      <WifiOff size={11} style={{ color: 'hsl(35 90% 40%)' }} />
+      <span style={{ fontSize: '11px', fontWeight: 650, color: 'hsl(35 90% 36%)', letterSpacing: '0.02em' }}>
+        Offline
+      </span>
+    </div>
+  )
 
   const privacyBadge = (
     <div style={{
@@ -92,9 +108,12 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Right: privacy badge (desktop) + hamburger (mobile) */}
+        {/* Right: privacy badge + offline badge (desktop) + hamburger (mobile) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <div className="desktop-nav">{privacyBadge}</div>
+          <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {offlineBadge}
+            {privacyBadge}
+          </div>
           <button
             className="mobile-menu-btn"
             onClick={() => setMobileOpen(v => !v)}
@@ -145,7 +164,10 @@ export function Navbar() {
                 </Link>
               )
             })}
-            <div style={{ padding: '8px 14px 4px' }}>{privacyBadge}</div>
+            <div style={{ padding: '8px 14px 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
+              {offlineBadge}
+              {privacyBadge}
+            </div>
           </div>
         </>
       )}

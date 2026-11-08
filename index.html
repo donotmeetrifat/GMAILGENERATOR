@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Unlimited Gmail" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Unlimited Gmail Generator – Free Gmail Dot Alias Generator</title>
     <meta name="description" content="Generate unlimited Gmail dot aliases instantly with Unlimited Gmail Generator. Free online Gmail dot trick and alias generator." />
@@ -24,5 +30,16 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            console.log('Unlimited Gmail Offline ServiceWorker registered:', reg.scope);
+          }).catch(function(err) {
+            console.warn('ServiceWorker registration error:', err);
+          });
+        });
+      }
+    </script>
   </body>
 </html> 
