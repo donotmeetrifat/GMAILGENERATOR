@@ -164,13 +164,60 @@ export function importData(json: string): { success: boolean; error?: string } {
   try {
     const data = JSON.parse(json)
     if (!data.version || !Array.isArray(data.projects)) {
-      return { success: false, error: 'Invalid format' }
+      return { success: false, error: 'Invalid backup format' }
     }
-    localStorage.setItem(PROJECTS_KEY, JSON.stringify(data.projects))
-    if (data.settings) localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings))
+
+    // Defense-in-depth: Validate project object structures to prevent state corruption
+    const validProjects: Project[] = []
+    for (const p of data.projects) {
+      if (!p || typeof p !== 'object' || typeof p.name !== 'string') continue
+      const validAliases: SavedAlias[] = []
+      if (Array.isArray(p.aliases)) {
+        for (const a of p.aliases) {
+          if (!a || typeof a !== 'object' || typeof a.alias !== 'string') continue
+          validAliases.push({
+            id: typeof a.id === 'string' ? a.id : generateId(),
+            alias: String(a.alias),
+            mainEmail: typeof a.mainEmail === 'string' ? a.mainEmail : '',
+            website: typeof a.website === 'string' ? a.website : '',
+            loginUrl: typeof a.loginUrl === 'string' ? a.loginUrl : '',
+            username: typeof a.username === 'string' ? a.username : '',
+            password: typeof a.password === 'string' ? a.password : '',
+            notes: typeof a.notes === 'string' ? a.notes : '',
+            status: ['unused', 'created', 'active', 'disabled'].includes(a.status) ? a.status : 'unused',
+            accountCreated: Boolean(a.accountCreated),
+            dateAdded: typeof a.dateAdded === 'string' ? a.dateAdded : new Date().toISOString(),
+            updatedAt: typeof a.updatedAt === 'string' ? a.updatedAt : new Date().toISOString(),
+          })
+        }
+      }
+      validProjects.push({
+        id: typeof p.id === 'string' ? p.id : generateId(),
+        name: p.name.trim() || 'Untitled Project',
+        domain: typeof p.domain === 'string' ? p.domain.toLowerCase().replace(/^https?:\/\//, '') : '',
+        description: typeof p.description === 'string' ? p.description : '',
+        createdAt: typeof p.createdAt === 'string' ? p.createdAt : new Date().toISOString(),
+        updatedAt: typeof p.updatedAt === 'string' ? p.updatedAt : new Date().toISOString(),
+        aliases: validAliases,
+      })
+    }
+
+    localStorage.setItem(PROJECTS_KEY, JSON.stringify(validProjects))
+
+    // Sanitize settings import
+    if (data.settings && typeof data.settings === 'object') {
+      const current = getSettings()
+      const sanitizedSettings: AppSettings = {
+        localOnlyMode: typeof data.settings.localOnlyMode === 'boolean' ? data.settings.localOnlyMode : current.localOnlyMode,
+        hideSensitiveFields: typeof data.settings.hideSensitiveFields === 'boolean' ? data.settings.hideSensitiveFields : current.hideSensitiveFields,
+        theme: ['light', 'dark', 'system'].includes(data.settings.theme) ? data.settings.theme : current.theme,
+      }
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(sanitizedSettings))
+    }
+
     return { success: true }
   } catch {
-    return { success: false, error: 'Failed to parse' }
+    return { success: false, error: 'Failed to parse JSON backup file' }
   }
 }
 
