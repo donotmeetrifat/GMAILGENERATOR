@@ -772,3 +772,17 @@ div[title="Click to edit"]:hover .notes-edit-icon {
     box-shadow: var(--shadow-glass);
   }
 }
+
+/* ── Hide any external badge or branding ─────────────────── */
+[class*="blink-badge"],
+[id*="blink-badge"],
+[class*="made-with-blink"],
+[id*="made-with-blink"],
+div:has(> a[href*="blink.new"]),
+a[href*="blink.new"],
+iframe[src*="blink.new"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
