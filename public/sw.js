@@ -1,5 +1,5 @@
 // Unlimited Gmail Generator - Service Worker for 100% Offline Support
-const CACHE_NAME = 'unlimited-gmail-v6';
+const CACHE_NAME = 'unlimited-gmail-v7';
 
 const STATIC_ASSETS = [
   '/',
@@ -7,7 +7,8 @@ const STATIC_ASSETS = [
   '/manifest.json',
   '/favicon.png',
   '/logo.png',
-  '/preview.png'
+  '/preview.png',
+  '/llms.txt'
 ];
 
 // Install: Cache critical static shell

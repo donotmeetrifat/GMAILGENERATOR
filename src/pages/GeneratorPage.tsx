@@ -3,8 +3,8 @@ import { useSearch, useNavigate } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
-  ChevronDown, Search, Info, Star, Layers,
-  WifiOff, Download,
+  ChevronDown, ChevronUp, Search, Info, Star, Layers,
+  WifiOff, Download, HelpCircle, ShieldCheck, Zap,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
@@ -220,6 +220,72 @@ function AliasRow({ alias, rowNumber, isOriginal = false, animIndex, onSaveToPro
   )
 }
 
+// ── FAQ Items & Card Component ─────────────────────────────────
+const FAQ_ITEMS = [
+  {
+    q: 'What is the Gmail dot trick and how does it work?',
+    a: "Gmail completely ignores dots (periods) in the username portion of an address. For example, john.doe@gmail.com, j.o.h.n.d.o.e@gmail.com, and johndoe@gmail.com all route to the exact same inbox. External websites see each variation as a distinct email, allowing you to create multiple logins or spot which services sell your data."
+  },
+  {
+    q: 'Do emails sent to dot aliases land in my main inbox?',
+    a: "Yes! Every single email sent to any dot variation lands directly in your primary Gmail inbox. You do not need to configure any forwarding settings, MX records, or extra Google accounts."
+  },
+  {
+    q: 'Why use Unlimited Gmail Generator instead of multiple accounts?',
+    a: "Creating new email accounts requires phone verification, password tracking, and constant inbox switching. With dot aliases, you manage everything from your existing Gmail inbox while keeping your primary address shielded from spam lists."
+  },
+  {
+    q: 'Is my email or data sent or stored on any server?',
+    a: "Never. Unlimited Gmail Generator runs 100% locally in your browser sandbox. All alias calculations, searches, and project data are executed on your device and never uploaded to any remote server."
+  },
+  {
+    q: 'Can I use this app without an internet connection?',
+    a: "Yes! Unlimited Gmail Generator is built as an offline-first Progressive Web App (PWA). Once loaded or installed on your device, it operates flawlessly in airplane mode without Wi-Fi or cellular data."
+  }
+]
+
+function FAQCard({ item, defaultOpen = false }: { item: { q: string; a: string }; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div
+      className="glass-card"
+      style={{
+        borderRadius: 12, padding: '14px 18px',
+        transition: 'all 200ms ease',
+        border: open ? '1px solid hsl(var(--primary) / 0.3)' : undefined,
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          width: '100%', background: 'none', border: 'none', padding: 0,
+          cursor: 'pointer', textAlign: 'left', gap: 12,
+        }}
+      >
+        <span style={{ fontSize: '14px', fontWeight: 650, color: 'hsl(var(--foreground))', letterSpacing: '-0.01em' }}>
+          {item.q}
+        </span>
+        <span style={{
+          width: 24, height: 24, borderRadius: 6,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: open ? 'hsl(var(--primary) / 0.1)' : 'hsl(var(--secondary))',
+          color: open ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
+          flexShrink: 0, transition: 'transform 200ms ease',
+        }}>
+          {open ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+        </span>
+      </button>
+      {open && (
+        <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid hsl(var(--border) / 0.5)', fontSize: '13px', lineHeight: 1.65, color: 'hsl(var(--muted-foreground))' }}>
+          {item.a}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Main page ──────────────────────────────────────────────────
 export function GeneratorPage() {
   const search = useSearch({ strict: false }) as { email?: string }
@@ -430,9 +496,9 @@ export function GeneratorPage() {
 
         <p style={{
           margin: '14px auto 0', fontSize: '15.5px', lineHeight: 1.7,
-          color: 'hsl(var(--muted-foreground))', maxWidth: 400,
+          color: 'hsl(var(--muted-foreground))', maxWidth: 460,
         }}>
-          Turn one Gmail into 100+ email addresses using the Gmail dot trick — 100% free, no signup.
+          Free Gmail dot trick generator. Turn one Gmail into hundreds of unique email variations — 100% free, offline, no signup.
         </p>
       </motion.div>
 
@@ -691,6 +757,36 @@ export function GeneratorPage() {
           </motion.div>
         )}
       </motion.div>
+
+      {/* ── SEO Knowledge Base & FAQs Section ───────────── */}
+      <section style={{ marginTop: 36, marginBottom: 36 }}>
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '4px 12px', borderRadius: 999,
+            background: 'hsl(var(--primary) / 0.08)', color: 'hsl(var(--primary))',
+            fontSize: '11.5px', fontWeight: 650, letterSpacing: '0.04em', textTransform: 'uppercase',
+            marginBottom: 8,
+          }}>
+            <HelpCircle size={12} /> Knowledge Base & FAQs
+          </div>
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 750,
+            letterSpacing: '-0.03em', color: 'hsl(var(--foreground))', margin: '0 0 6px',
+          }}>
+            Frequently Asked Questions
+          </h2>
+          <p style={{ fontSize: '13.5px', color: 'hsl(var(--muted-foreground))', margin: 0, maxWidth: 460, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5 }}>
+            Learn how Google's Gmail dot trick works, why aliases protect your privacy, and how to use them effectively.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gap: 8 }}>
+          {FAQ_ITEMS.map((item, idx) => (
+            <FAQCard key={idx} item={item} defaultOpen={idx === 0} />
+          ))}
+        </div>
+      </section>
 
       {/* Single alias save modal */}
       <AnimatePresence>
