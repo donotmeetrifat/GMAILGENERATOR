@@ -63,16 +63,16 @@ export function Navbar() {
         }}
       >
         {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '9px', textDecoration: 'none', flexShrink: 0 }}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}
           onClick={() => setMobileOpen(false)}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 9, flexShrink: 0,
-            background: 'linear-gradient(135deg, hsl(221 83% 53%), hsl(210 100% 66%))',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 10px hsl(221 83% 53% / 0.35)',
-          }}>
-            <Mail size={15} style={{ color: '#fff' }} />
-          </div>
+          <img
+            src="/favicon.svg"
+            alt="Unlimited Gmail Generator Logo"
+            style={{
+              width: 32, height: 32, borderRadius: 9, flexShrink: 0,
+              boxShadow: '0 2px 10px hsl(221 83% 53% / 0.3)',
+            }}
+          />
           <span style={{ fontSize: '15.5px', fontWeight: 700, letterSpacing: '-0.025em', color: 'hsl(var(--foreground))' }}>
             Unlimited <span style={{ color: 'hsl(var(--primary))' }}>Gmail Generator</span>
           </span>

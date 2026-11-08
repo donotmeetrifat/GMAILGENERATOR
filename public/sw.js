@@ -1,5 +1,5 @@
 // Unlimited Gmail Generator - Service Worker for 100% Offline Support
-const CACHE_NAME = 'unlimited-gmail-v3';
+const CACHE_NAME = 'unlimited-gmail-v4';
 
 const STATIC_ASSETS = [
   '/',
@@ -91,8 +91,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cross-origin assets (e.g., Google Fonts)
-  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) {
+  // Cross-origin assets (strictly Google Fonts domains)
+  const isGoogleFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
+  if (isGoogleFont) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         if (cachedResponse) return cachedResponse;

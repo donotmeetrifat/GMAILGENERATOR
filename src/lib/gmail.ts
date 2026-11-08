@@ -29,12 +29,14 @@ export function getLocalPart(email: string): string {
   return normalized.split('@')[0].replace(/\./g, '')
 }
 
+export const MAX_GENERATED_ALIASES = 2048
+
 /**
  * Generate all possible dot-variant aliases for a Gmail address.
  * For N characters in local part, there are N-1 gaps, each can have a dot or not.
- * Total combinations = 2^(N-1)
+ * Total combinations = 2^(N-1). Capped at MAX_GENERATED_ALIASES to prevent browser OOM / freezing.
  */
-export function generateAliases(email: string): string[] {
+export function generateAliases(email: string, maxLimit = MAX_GENERATED_ALIASES): string[] {
   const normalized = normalizeEmail(email)
   if (!isValidGmail(normalized)) return []
 
@@ -45,7 +47,8 @@ export function generateAliases(email: string): string[] {
   if (n === 1) return [rawLocal + '@gmail.com']
 
   const gapCount = n - 1
-  const totalCombinations = Math.pow(2, gapCount)
+  // Cap iterations to avoid thread blocking or memory exhaustion on long emails
+  const totalCombinations = Math.min(Math.pow(2, gapCount), maxLimit)
   const results: string[] = []
 
   for (let i = 0; i < totalCombinations; i++) {

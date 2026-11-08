@@ -24,6 +24,24 @@ const LABEL_STYLE: React.CSSProperties = {
   letterSpacing: '0.07em', textTransform: 'uppercase', userSelect: 'none',
 }
 
+// ── Helpers ───────────────────────────────────────────────────
+function sanitizeUrl(url?: string): string | undefined {
+  if (!url) return undefined
+  const trimmed = url.trim()
+  if (!trimmed) return undefined
+  try {
+    const parsed = (trimmed.startsWith('http://') || trimmed.startsWith('https://'))
+      ? new URL(trimmed)
+      : new URL(`https://${trimmed}`)
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return parsed.href
+    }
+  } catch {
+    return undefined
+  }
+  return undefined
+}
+
 // ── Plain text editable field ───────────────────────────────────
 interface DetailFieldProps {
   icon: React.ReactNode
@@ -167,8 +185,8 @@ function DetailField({
                   </button>
                 )}
                 {!isMasked && <CopyButton text={value} size="sm" />}
-                {type === 'url' && linkHref && !isMasked && (
-                  <a href={linkHref} target="_blank" rel="noopener noreferrer" className="copy-btn" title="Open in new tab">
+                {type === 'url' && sanitizeUrl(linkHref) && !isMasked && (
+                  <a href={sanitizeUrl(linkHref)} target="_blank" rel="noopener noreferrer" className="copy-btn" title="Open in new tab">
                     <ExternalLink size={12} />
                   </a>
                 )}
