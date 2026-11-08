@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
   ChevronDown, Search, Info, Star, Layers,
-  WifiOff, Download,
+  WifiOff,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
@@ -14,7 +14,6 @@ import { toast } from '@/components/ui/Toast'
 import { blink } from '@/blink/client'
 import type { Project } from '@/types'
 import { BulkSaveModal } from '@/components/BulkSaveModal'
-import { InstallAppModal } from '@/components/InstallAppModal'
 
 // ── Syntax-highlighted alias display ──────────────────────────
 function AliasDisplay({ alias, isOriginal = false }: { alias: string; isOriginal?: boolean }) {
@@ -234,7 +233,6 @@ export function GeneratorPage() {
   const [filter, setFilter] = useState('')
   const [saveTarget, setSaveTarget] = useState<string | null>(null)
   const [showBulkSave, setShowBulkSave] = useState(false)
-  const [showInstallModal, setShowInstallModal] = useState(false)
   const [copyAllDone, setCopyAllDone] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const filterRef = useRef<HTMLInputElement>(null)
@@ -355,24 +353,18 @@ export function GeneratorPage() {
             </span>
           </div>
 
-          <button
-            onClick={() => setShowInstallModal(true)}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '5px 13px', borderRadius: 999,
-              background: isOnline ? 'hsl(142 71% 45% / 0.08)' : 'hsl(35 90% 55% / 0.14)',
-              border: `1px solid ${isOnline ? 'hsl(142 71% 45% / 0.22)' : 'hsl(35 90% 55% / 0.35)'}`,
-              cursor: 'pointer',
-            }}
-            title="Click to download app on your device"
-          >
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '5px 13px', borderRadius: 999,
+            background: isOnline ? 'hsl(142 71% 45% / 0.08)' : 'hsl(35 90% 55% / 0.14)',
+            border: `1px solid ${isOnline ? 'hsl(142 71% 45% / 0.22)' : 'hsl(35 90% 55% / 0.35)'}`,
+          }}>
             {isOnline ? (
               <>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
                 <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'hsl(142 71% 32%)' }}>
                   100% Offline Ready
                 </span>
-                <Download size={11} style={{ color: 'hsl(142 71% 36%)', marginLeft: 2 }} />
               </>
             ) : (
               <>
@@ -382,7 +374,7 @@ export function GeneratorPage() {
                 </span>
               </>
             )}
-          </button>
+          </div>
         </div>
 
         <h1 style={{
@@ -405,28 +397,6 @@ export function GeneratorPage() {
         }}>
           Turn one Gmail into 100+ email addresses using the Gmail dot trick — 100% free, no signup.
         </p>
-
-        {/* Download App Action */}
-        <div style={{ marginTop: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-          <button
-            onClick={() => setShowInstallModal(true)}
-            className="btn-premium btn-primary"
-            style={{
-              padding: '10px 24px',
-              borderRadius: 999,
-              fontSize: '13.5px',
-              fontWeight: 650,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              boxShadow: '0 4px 18px hsl(var(--primary) / 0.35)',
-              cursor: 'pointer',
-            }}
-          >
-            <Download size={15} />
-            Download App (Works 100% Offline)
-          </button>
-        </div>
       </motion.div>
 
       {/* ── Offline Active Alert Banner ──────────────── */}
@@ -694,12 +664,6 @@ export function GeneratorPage() {
           />
         )}
       </AnimatePresence>
-
-      {/* PWA Offline App Install Modal */}
-      <InstallAppModal
-        isOpen={showInstallModal}
-        onClose={() => setShowInstallModal(false)}
-      />
     </main>
   )
 }

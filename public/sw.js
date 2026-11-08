@@ -1,5 +1,5 @@
 // Unlimited Gmail Generator - Service Worker for 100% Offline Support
-const CACHE_NAME = 'unlimited-gmail-v2';
+const CACHE_NAME = 'unlimited-gmail-v3';
 
 const STATIC_ASSETS = [
   '/',

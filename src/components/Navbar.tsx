@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
-import { Mail, FolderOpen, Settings, ShieldCheck, Menu, X, WifiOff, Download } from 'lucide-react'
+import { Mail, FolderOpen, Settings, ShieldCheck, Menu, X, WifiOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getSettings } from '@/lib/storage'
 import { useNetworkStatus } from '@/hooks/useNetworkStatus'
-import { InstallAppModal } from '@/components/InstallAppModal'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Generator', icon: Mail, exact: true },
@@ -18,7 +17,6 @@ export function Navbar() {
   const settings = getSettings()
   const localOnly = settings.localOnlyMode
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [installModalOpen, setInstallModalOpen] = useState(false)
 
   function isActive(to: string, exact: boolean) {
     if (exact) return location.pathname === to
@@ -110,29 +108,9 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Right: Download App + privacy badge + offline badge (desktop) + hamburger (mobile) */}
+        {/* Right: privacy badge + offline badge (desktop) + hamburger (mobile) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button
-              onClick={() => setInstallModalOpen(true)}
-              className="btn-premium btn-primary"
-              style={{
-                height: 30,
-                padding: '0 11px',
-                borderRadius: 999,
-                fontSize: '11.5px',
-                fontWeight: 650,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px hsl(var(--primary) / 0.25)',
-              }}
-              title="Download app to your device for 100% offline use"
-            >
-              <Download size={12} />
-              <span>Download App</span>
-            </button>
             {offlineBadge}
             {privacyBadge}
           </div>
@@ -186,39 +164,13 @@ export function Navbar() {
                 </Link>
               )
             })}
-            <button
-              onClick={() => { setMobileOpen(false); setInstallModalOpen(true) }}
-              className="btn-premium btn-primary"
-              style={{
-                width: '100%',
-                padding: '10px 14px',
-                borderRadius: 10,
-                marginTop: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-                fontSize: '13px',
-                fontWeight: 650,
-                cursor: 'pointer',
-              }}
-            >
-              <Download size={14} />
-              Download App (Works Offline)
-            </button>
-            <div style={{ padding: '10px 14px 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ padding: '8px 14px 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
               {offlineBadge}
               {privacyBadge}
             </div>
           </div>
         </>
       )}
-
-      {/* Install App Modal */}
-      <InstallAppModal
-        isOpen={installModalOpen}
-        onClose={() => setInstallModalOpen(false)}
-      />
     </>
   )
 }
