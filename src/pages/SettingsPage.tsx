@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Shield, Download, Upload, Trash2, X, Check,
-  AlertTriangle, Info, Database, FileJson, Eye, EyeOff,
+  AlertTriangle, Info, Database, Eye, EyeOff,
   Lock, CheckCircle2, ChevronDown, ChevronRight,
 } from 'lucide-react'
 import { getSettings, saveSettings, exportData, importData, clearAllData, getProjects } from '@/lib/storage'
@@ -590,28 +590,6 @@ export function SettingsPage() {
               >
                 <Trash2 size={13} /> Clear All Data
               </button>
-            </div>
-          </Section>
-        </motion.div>
-
-        {/* About */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <Section title="About" icon={FileJson}>
-            <div style={{ padding: '13px 18px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                {[
-                  ['App', 'Unlimited Gmail Generator'],
-                  ['Version', '1.0.0'],
-                  ['Storage', 'localStorage (browser-only)'],
-                  ['Network', 'None — fully offline'],
-                  ['Framework', 'React + Vite + TypeScript'],
-                ].map(([key, val]) => (
-                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '13px', color: 'hsl(var(--muted-foreground))' }}>{key}</span>
-                    <span style={{ fontSize: '12.5px', fontWeight: 500, color: 'hsl(var(--foreground))', fontFamily: 'var(--font-mono)', textAlign: 'right' }}>{val}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </Section>
         </motion.div>
