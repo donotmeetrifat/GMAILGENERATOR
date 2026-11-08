@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail, Clipboard, X, Copy, Check, FolderPlus,
   ChevronDown, Search, Info, Star, Layers,
-  WifiOff,
+  WifiOff, Download,
 } from 'lucide-react'
 import { generateAliases, isValidGmail, normalizeGmail, formatAliasCount, getAliasCount } from '@/lib/gmail'
 import { useProjects } from '@/hooks/useProjects'
@@ -274,6 +274,43 @@ export function GeneratorPage() {
     }
   }
 
+  function handleDownloadTxt() {
+    const list = filteredAliases.length > 0 ? filteredAliases : aliases
+    if (!list.length) return
+    const content = list.join('\n')
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    const username = email.split('@')[0] || 'gmail'
+    a.href = url
+    a.download = `${username}-aliases.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast.success(`Downloaded ${list.length} aliases as .TXT`)
+  }
+
+  function handleDownloadCsv() {
+    const list = filteredAliases.length > 0 ? filteredAliases : aliases
+    if (!list.length) return
+    const now = new Date().toISOString().slice(0, 10)
+    const normalized = normalizeGmail(email)
+    const header = 'Alias,Main Email,Date Generated\r\n'
+    const rows = list.map(a => `"${a}","${normalized}","${now}"`).join('\r\n')
+    const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    const username = email.split('@')[0] || 'gmail'
+    a.href = url
+    a.download = `${username}-aliases.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast.success(`Exported ${list.length} aliases as .CSV`)
+  }
+
   function handleModalSave(projectId: string) {
     if (!saveTarget) return
     const saved = addAliasToProject(projectId, { alias: saveTarget, mainEmail: normalizeGmail(email) })
@@ -499,7 +536,7 @@ export function GeneratorPage() {
                   )}
                 </span>
 
-                <div style={{ display: 'flex', gap: 6 }}>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
                   <motion.button
                     onClick={handleCopyAll}
                     className={`btn-premium btn-outline copy-all-btn${copyAllDone ? ' copy-all-done' : ''}`}
@@ -510,6 +547,24 @@ export function GeneratorPage() {
                     {copyAllDone ? <Check size={12} /> : <Copy size={12} />}
                     {copyAllDone ? 'Copied!' : 'Copy All'}
                   </motion.button>
+                  <button
+                    onClick={handleDownloadTxt}
+                    className="btn-premium btn-outline"
+                    style={{ height: 32, padding: '0 10px', fontSize: '12px', gap: 4, display: 'flex', alignItems: 'center' }}
+                    title="Download all aliases as a text file"
+                  >
+                    <Download size={12} />
+                    .TXT
+                  </button>
+                  <button
+                    onClick={handleDownloadCsv}
+                    className="btn-premium btn-outline"
+                    style={{ height: 32, padding: '0 10px', fontSize: '12px', gap: 4, display: 'flex', alignItems: 'center' }}
+                    title="Export all aliases as a CSV spreadsheet"
+                  >
+                    <Download size={12} />
+                    .CSV
+                  </button>
                   {projects.length > 0 && (
                     <button
                       onClick={() => setShowBulkSave(true)}

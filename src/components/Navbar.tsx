@@ -63,15 +63,8 @@ export function Navbar() {
         }}
       >
         {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}
           onClick={() => setMobileOpen(false)}>
-          <img
-            src="/logo.png"
-            alt="Unlimited Gmail Generator Logo"
-            style={{
-              width: 32, height: 32, borderRadius: 8, objectFit: 'contain', flexShrink: 0,
-            }}
-          />
           <span style={{ fontSize: '15.5px', fontWeight: 700, letterSpacing: '-0.025em', color: 'hsl(var(--foreground))' }}>
             Unlimited <span style={{ color: 'hsl(var(--primary))' }}>Gmail Generator</span>
           </span>
