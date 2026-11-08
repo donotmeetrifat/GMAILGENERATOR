@@ -1,13 +1,14 @@
 {
-  "name": "Unlimited Gmail Generator",
+  "name": "Unlimited Gmail Generator – Create Multiple Emails with One Gmail",
   "short_name": "Unlimited Gmail",
-  "description": "Generate unlimited Gmail dot aliases instantly. Works 100% offline without internet.",
+  "description": "Create multiple email addresses and aliases instantly with one Gmail account using the Gmail dot trick. 100% offline-ready PWA.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "orientation": "any",
+  "categories": ["utilities", "productivity", "developer tools"],
   "icons": [
     {
       "src": "/favicon.png",
@@ -21,6 +22,17 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Generator",
+      "url": "/",
+      "description": "Generate instant Gmail dot aliases"
+    },
+    {
+      "name": "Projects",
+      "url": "/projects",
+      "description": "Manage saved aliases and accounts"
+    }
   ]
 }
-
